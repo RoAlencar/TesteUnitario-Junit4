@@ -33,36 +33,14 @@ public class LocacaoServiceTest {
 
     @Before
     public void setup(){
-        System.out.println("Before");
         service = new LocacaoService();
-        //Incremento
-        contador++;
-        //Impressão do contador
-        System.out.println(contador);
     }
 
-    @After
-    public void tearDown(){
-        System.out.println("After");
-    }
-
-    @BeforeClass
-    public static void setup1(){
-        System.out.println("BeforeClass");
-
-    }
-
-    @AfterClass
-    public static void tearDown2(){
-        System.out.println("AfterClass");
-    }
     @Test
     public void testeLocacao() throws Exception {
         //Cenario
         Usuario usuario = new Usuario("Usuario 1");
         Filme filme = new Filme("Filme", 2, 5.0);
-
-        System.out.println("Teste!");
 
         //Ação
         Locacao locacao = service.alugarFilme(usuario, filme);
