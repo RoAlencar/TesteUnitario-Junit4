@@ -9,6 +9,7 @@ import br.ce.wcaquino.exceptions.FilmeSemEstoqueException;
 import br.ce.wcaquino.exceptions.LocadoraException;
 import br.ce.wcaquino.matchers.DiaSemanaMatcher;
 import br.ce.wcaquino.utils.DataUtils;
+import buildermaster.BuilderMaster;
 import org.hamcrest.CoreMatchers;
 import org.junit.*;
 import org.junit.rules.ErrorCollector;
@@ -107,5 +108,9 @@ public class LocacaoServiceTest {
 
         //Verificação
         assertThat(retorno.getDataRetorno(), caiNumaSegunda());
+    }
+
+    public static void main(String[] args) {
+        new BuilderMaster().gerarCodigoClasse(Locacao.class);
     }
 }
