@@ -29,7 +29,16 @@ public class Usuario {
 	}
 
 	@Override
+	public String toString() {
+		return "Usuario{" +
+				"nome='" + nome + '\'' +
+				'}';
+	}
+
+	@Override
 	public int hashCode() {
 		return Objects.hash(nome);
+
+
 	}
 }
