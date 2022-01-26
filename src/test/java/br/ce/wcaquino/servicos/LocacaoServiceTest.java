@@ -23,6 +23,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static br.ce.wcaquino.builders.FilmeBuilder.umFilme;
+import static br.ce.wcaquino.builders.UsuarioBuilder.*;
 import static br.ce.wcaquino.matchers.MatchersProprios.*;
 import static br.ce.wcaquino.utils.DataUtils.isMesmaData;
 import static br.ce.wcaquino.utils.DataUtils.obterDataComDiferencaDias;
@@ -32,6 +34,9 @@ import static org.junit.Assert.*;
 public class LocacaoServiceTest {
 
     private LocacaoService service;
+    private SPCService spc;
+    private LocacaoDAO dao;
+
 
     //Definição do contador
     private static int contador  = 0;
@@ -46,16 +51,18 @@ public class LocacaoServiceTest {
     public void setup(){
         service = new LocacaoService();
         //O mock é generico, ele comporta padrão conforme a assinatura do metodo.
-        LocacaoDAO dao = Mockito.mock(LocacaoDAO.class);
+       dao =  Mockito.mock(LocacaoDAO.class);
         service.setLocacaoDAO(dao);
+       spc = Mockito.mock(SPCService.class);
+       service.setSpcService(spc);
     }
 
     @Test
     public void deveAlugarFilme() throws Exception {
         Assume.assumeFalse(DataUtils.verificarDiaSemana(new Date(),Calendar.SATURDAY));
         //Cenario
-        Usuario usuario = UsuarioBuilder.umUsuario().agora();
-        List<Filme> filmes = Arrays.asList(FilmeBuilder.umFilme().comValor(5.0).agora());
+        Usuario usuario = umUsuario().agora();
+        List<Filme> filmes = Arrays.asList(umFilme().comValor(5.0).agora());
 
         //Ação
         Locacao locacao = service.alugarFilme(usuario, filmes);
@@ -69,7 +76,7 @@ public class LocacaoServiceTest {
     @Test(expected = FilmeSemEstoqueException.class)
     public void naoDeveAlguarFilmeSemEstoque() throws Exception {
         //Cenario
-        Usuario usuario = UsuarioBuilder.umUsuario().agora();
+        Usuario usuario = umUsuario().agora();
         List<Filme> filmes = Arrays.asList(FilmeBuilder.umFilmeSemEstoque().agora());
 
         //Ação
@@ -79,7 +86,7 @@ public class LocacaoServiceTest {
     @Test
     public void naoDeveAlugarFilmeSemUsuario() throws FilmeSemEstoqueException {
         //Cenario
-        List<Filme> filmes = Arrays.asList(FilmeBuilder.umFilme().agora())  ;
+        List<Filme> filmes = Arrays.asList(umFilme().agora())  ;
         //Ação
         try {
             service.alugarFilme(null, filmes);
@@ -93,7 +100,7 @@ public class LocacaoServiceTest {
     @Test
     public void naoDeveAlugarFilmeSemFilme() throws FilmeSemEstoqueException, LocadoraException {
         //Cenario
-        Usuario usuario = UsuarioBuilder.umUsuario().agora();
+        Usuario usuario = umUsuario().agora();
 
         exception.expect(LocadoraException.class);
         exception.expectMessage("Filme vazio");
@@ -106,8 +113,8 @@ public class LocacaoServiceTest {
     public void deveDevolverNaSegundaAoAlugarNoSabado() throws FilmeSemEstoqueException, LocadoraException {
         Assume.assumeTrue(DataUtils.verificarDiaSemana(new Date(), Calendar.SATURDAY));
         //Cenario
-        Usuario usuario = UsuarioBuilder.umUsuario().agora();
-        List<Filme> filmes = Arrays.asList(FilmeBuilder.umFilme().agora());
+        Usuario usuario = umUsuario().agora();
+        List<Filme> filmes = Arrays.asList(umFilme().agora());
 
         //Ação
         Locacao retorno = service.alugarFilme(usuario,filmes);
@@ -116,7 +123,18 @@ public class LocacaoServiceTest {
         assertThat(retorno.getDataRetorno(), caiNumaSegunda());
     }
 
-    public static void main(String[] args) {
-        new BuilderMaster().gerarCodigoClasse(Locacao.class);
+    @Test
+    public void naoDeveAlugarFilmeParaNegativadoSPC() throws FilmeSemEstoqueException, LocadoraException {
+        //Cenario
+        Usuario usuario = umUsuario().agora();
+        Usuario usuario2 = umUsuario().comNome("Usuario2").agora();
+        List<Filme> filmes = Arrays.asList(umFilme().agora());
+
+        Mockito.when(spc.possuiNegativacao(usuario)).thenReturn(true);
+
+        exception.expect(LocadoraException.class);
+        exception.expectMessage("Usuario Negativado");
+        //acao
+        service.alugarFilme(usuario , filmes)    ;
     }
 }
