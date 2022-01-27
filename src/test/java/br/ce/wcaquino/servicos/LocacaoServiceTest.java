@@ -17,7 +17,10 @@ import org.hamcrest.CoreMatchers;
 import org.junit.*;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -38,14 +41,15 @@ import static org.mockito.Mockito.*;
 
 public class LocacaoServiceTest {
 
+    @InjectMocks
     private LocacaoService service;
+
+    @Mock
     private SPCService spc;
+    @Mock
     private LocacaoDAO dao;
+    @Mock
     private EmailService email;
-
-
-    //Definição do contador
-    private static int contador  = 0;
 
     @Rule
     public ErrorCollector error = new ErrorCollector();
@@ -55,14 +59,7 @@ public class LocacaoServiceTest {
 
     @Before
     public void setup(){
-        service = new LocacaoService();
-        //O mock é generico, ele comporta padrão conforme a assinatura do metodo.
-       dao =  mock(LocacaoDAO.class);
-        service.setLocacaoDAO(dao);
-       spc = mock(SPCService.class);
-       service.setSpcService(spc);
-       email = mock(EmailService.class);
-       service.setEmailService(email);
+        MockitoAnnotations.initMocks(this);
     }
 
     @Test

@@ -1,7 +1,6 @@
 package br.ce.wcaquino.servicos;
 
 import static br.ce.wcaquino.utils.DataUtils.adicionarDias;
-import static br.ce.wcaquino.utils.DataUtils.obterDataComDiferencaDias;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -14,8 +13,6 @@ import br.ce.wcaquino.entidades.Usuario;
 import br.ce.wcaquino.exceptions.FilmeSemEstoqueException;
 import br.ce.wcaquino.exceptions.LocadoraException;
 import br.ce.wcaquino.utils.DataUtils;
-import org.junit.Assert;
-import org.junit.Test;
 
 public class LocacaoService {
 
@@ -88,17 +85,4 @@ public class LocacaoService {
             }
         }
     }
-
-    public void setLocacaoDAO(LocacaoDAO dao) {
-        this.dao = dao;
-    }
-
-    public void setSpcService(SPCService spc) {
-        spcService = spc;
-    }
-
-    public void setEmailService(EmailService email){
-        emailService = email;
-    }
-
 }
