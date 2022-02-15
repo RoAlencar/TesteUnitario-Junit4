@@ -27,6 +27,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static br.ce.wcaquino.builders.FilmeBuilder.*;
 import static br.ce.wcaquino.builders.FilmeBuilder.umFilme;
 import static br.ce.wcaquino.builders.LocacaoBuilder.*;
 import static br.ce.wcaquino.builders.UsuarioBuilder.*;
@@ -82,7 +83,7 @@ public class LocacaoServiceTest {
     public void naoDeveAlguarFilmeSemEstoque() throws Exception {
         //Cenario
         Usuario usuario = umUsuario().agora();
-        List<Filme> filmes = asList(FilmeBuilder.umFilmeSemEstoque().agora());
+        List<Filme> filmes = asList(umFilmeSemEstoque().agora());
 
         //Ação
         service.alugarFilme(usuario, filmes);
@@ -129,10 +130,10 @@ public class LocacaoServiceTest {
     }
 
     @Test
-    public void naoDeveAlugarFilmeParaNegativadoSPC() throws FilmeSemEstoqueException {
+    public void naoDeveAlugarFilmeParaNegativadoSPC() throws Exception {
         //Cenario
         Usuario usuario = umUsuario().agora();
-        Usuario usuario2 = UsuarioBuilder.umUsuario().comNome("Jorge").agora();
+        Usuario usuario2 = umUsuario().comNome("Jorge").agora();
         List<Filme> filmes = asList(umFilme().agora());
 
         when(spc.possuiNegativacao(Mockito.any(Usuario.class))).thenReturn(true);
@@ -184,5 +185,19 @@ public class LocacaoServiceTest {
         verify(email, atLeastOnce()).notificarAtraso(usuario3);
         verify(email, never()).notificarAtraso(usuario2);
         verifyNoMoreInteractions(email);
+    }
+
+    @Test
+    public void deveTratarErrornoSPC() throws Exception {
+        //Cenario
+        Usuario usuario = umUsuario().agora();
+        List<Filme> filmes= Arrays.asList(umFilme().agora());
+
+        when(spc.possuiNegativacao(usuario)).thenThrow(new Exception("Falha Catastrófica"));
+        //Verificação
+        exception.expect(LocadoraException.class);
+        exception.expectMessage("Problemas no SPC, tente novamente!");
+        //Ação
+        service.alugarFilme(usuario, filmes);
     }
 }

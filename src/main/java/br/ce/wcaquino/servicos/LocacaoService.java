@@ -36,9 +36,17 @@ public class LocacaoService {
             }
         }
 
-        if(spcService.possuiNegativacao(usuario)) {
-            throw  new LocadoraException("Usuario Negativado");
+        boolean negativado;
+        try {
+       negativado = spcService.possuiNegativacao(usuario);
+        } catch (Exception e) {
+            throw new LocadoraException("Problemas no SPC, tente novamente!");
         }
+
+        if (negativado) {
+            throw new LocadoraException("Usuario Negativado");
+        }
+
 
         Locacao locacao = new Locacao();
         locacao.setFilmes(filmes);
