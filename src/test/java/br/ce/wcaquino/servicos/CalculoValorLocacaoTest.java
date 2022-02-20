@@ -85,8 +85,6 @@ public class CalculoValorLocacaoTest {
     public void deveCalcularValorLocacaoConsiderandoDescontos() throws FilmeSemEstoqueException, LocadoraException, InterruptedException {
         //Cenario
         Usuario usuario = new Usuario("Usuario 1");
-
-        Thread.sleep(5000);
         //Ação
         Locacao resultado = service.alugarFilme(usuario,filmes);
 
