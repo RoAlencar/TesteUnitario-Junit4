@@ -14,16 +14,12 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
 import org.mockito.*;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-import org.powermock.reflect.Whitebox;
 
+import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 
 import static br.ce.wcaquino.builders.FilmeBuilder.umFilme;
@@ -38,12 +34,11 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.*;
 
-@RunWith(PowerMockRunner.class)
 @PowerMockIgnore("jdk.internal.reflect.*")
 @PrepareForTest({LocacaoService.class})
 public class LocacaoServiceTest {
 
-    @InjectMocks
+    @InjectMocks @Spy
     private LocacaoService service;
 
     @Mock
@@ -62,7 +57,6 @@ public class LocacaoServiceTest {
     @Before
     public void setup(){
         MockitoAnnotations.initMocks(this);
-        service = PowerMockito.spy(service);
     }
 
     @Test
@@ -72,22 +66,12 @@ public class LocacaoServiceTest {
         Usuario usuario = umUsuario().agora();
         List<Filme> filmes = asList(umFilme().comValor(5.0).agora());
 
-        // PowerMockito.whenNew(Date.class).withNoArguments().thenReturn(DataUtils.obterData(19,2,2022));
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.DAY_OF_MONTH,19);
-        calendar.set(Calendar.MONTH,Calendar.FEBRUARY);
-        calendar.set(Calendar.YEAR,2022);
-        PowerMockito.mockStatic(Calendar.class);
-        PowerMockito.when(Calendar.getInstance()).thenReturn(calendar);
-
+        Mockito.doReturn(DataUtils.obterData(19,2,2022)).when(service).obterData();
         //Ação
         Locacao locacao = service.alugarFilme(usuario, filmes);
 
         //Verificação
         error.checkThat(locacao.getValor(), is(equalTo(5.0)));
-        //error.checkThat(locacao.getDataLocacao(), ehHoje());
-        // error.checkThat(locacao.getDataRetorno(), ehHojeComDiferencaDias(1));
         error.checkThat(DataUtils.isMesmaData(locacao.getDataLocacao(), DataUtils.obterData(19,2,2022)), is( true));
         error.checkThat(DataUtils.isMesmaData(locacao.getDataRetorno(), DataUtils.obterData(21,2,2022)), is( true));
     }
@@ -134,21 +118,13 @@ public class LocacaoServiceTest {
         Usuario usuario = umUsuario().agora();
         List<Filme> filmes = asList(umFilme().agora());
 
-        //PowerMockito.whenNew(Date.class).withNoArguments().thenReturn(DataUtils.obterData(29,4,2017));
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.DAY_OF_MONTH,29);
-        calendar.set(Calendar.MONTH,Calendar.APRIL);
-        calendar.set(Calendar.YEAR,2017);
-        PowerMockito.mockStatic(Calendar.class);
-        PowerMockito.when(Calendar.getInstance()).thenReturn(calendar);
+        Mockito.doReturn(DataUtils.obterData(19,2,2022)).when(service).obterData();
         //Ação
         Locacao retorno = service.alugarFilme(usuario,filmes);
 
         //Verificação
         assertThat(retorno.getDataRetorno(), caiNumaSegunda());
-        // PowerMockito.verifyNew(Date.class, Mockito.times(2)).withNoArguments();
-        PowerMockito.verifyStatic(Mockito.times(2));
-        Calendar.getInstance();
+
     }
 
     @Test
@@ -242,27 +218,15 @@ public class LocacaoServiceTest {
     }
 
     @Test
-    public void deveAlugarFilme_SemCalcularValor() throws Exception {
-        //Cenario
-        Usuario usuario = umUsuario().agora();
-        List<Filme> filmes = Arrays.asList(umFilme().agora());
-
-        PowerMockito.doReturn(1.0).when(service,"calcularValorLocacao",filmes);
-        //Ação
-        Locacao locacao = service.alugarFilme(usuario, filmes);
-        //Verificação
-        Assert.assertThat(locacao.getValor(), is(1.0));
-        PowerMockito.verifyPrivate(service).invoke("calcularValorLocacao", filmes);
-    }
-
-    @Test
     public void deveCalcularValorLocacao() throws Exception {
         //Cenario
         List<Filme> filmes = Arrays.asList(umFilme().agora());
 
         //Ação
-       Double valor = (Double) Whitebox.invokeMethod(service,"calcularValorLocacao", filmes);
-
+        Class<LocacaoService> clazz = LocacaoService.class;
+        Method metodo = clazz.getDeclaredMethod("calcularValorLocacao", List.class);
+        metodo.setAccessible(true);
+        Double valor = (Double) metodo.invoke(service,filmes);
         //Verificação
         Assert.assertThat(valor,is(4.0));
     }
