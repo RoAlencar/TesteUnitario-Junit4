@@ -1,11 +1,5 @@
 package br.ce.wcaquino.servicos;
 
-import static br.ce.wcaquino.utils.DataUtils.adicionarDias;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 import br.ce.wcaquino.daos.LocacaoDAO;
 import br.ce.wcaquino.entidades.Filme;
 import br.ce.wcaquino.entidades.Locacao;
@@ -13,6 +7,12 @@ import br.ce.wcaquino.entidades.Usuario;
 import br.ce.wcaquino.exceptions.FilmeSemEstoqueException;
 import br.ce.wcaquino.exceptions.LocadoraException;
 import br.ce.wcaquino.utils.DataUtils;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import static br.ce.wcaquino.utils.DataUtils.adicionarDias;
 
 public class LocacaoService {
 
@@ -38,7 +38,7 @@ public class LocacaoService {
 
         boolean negativado;
         try {
-       negativado = spcService.possuiNegativacao(usuario);
+            negativado = spcService.possuiNegativacao(usuario);
         } catch (Exception e) {
             throw new LocadoraException("Problemas no SPC, tente novamente!");
         }
@@ -46,29 +46,12 @@ public class LocacaoService {
         if (negativado) {
             throw new LocadoraException("Usuario Negativado");
         }
-
-
+        
         Locacao locacao = new Locacao();
         locacao.setFilmes(filmes);
         locacao.setUsuario(usuario);
         locacao.setDataLocacao(Calendar.getInstance().getTime());
-        Double valorTotal = 0d;
-        for(int i = 0; i < filmes.size(); i++){
-            Filme filme = filmes.get(i);
-            Double valorFilme = filme.getPrecoLocacao();
-            switch(i){
-                case 2: valorFilme = valorFilme * 0.75;
-                break;
-                case 3: valorFilme = valorFilme * 0.50;
-                    break;
-                case 4: valorFilme = valorFilme * 0.25;
-                    break;
-                case 5: valorFilme = 0d;
-                    break;
-            }
-            valorTotal += valorFilme;
-        }
-        locacao.setValor(valorTotal);
+        locacao.setValor(calcularValorLocacao(filmes));
 
         //Entrega no dia seguinte
         Date dataEntrega = Calendar.getInstance().getTime();
@@ -82,6 +65,26 @@ public class LocacaoService {
         dao.salvar(locacao);
 
         return locacao;
+    }
+
+    private Double calcularValorLocacao(List<Filme> filmes) {
+        Double valorTotal = 0d;
+        for(int i = 0; i < filmes.size(); i++){
+            Filme filme = filmes.get(i);
+            Double valorFilme = filme.getPrecoLocacao();
+            switch(i){
+                case 2: valorFilme = valorFilme * 0.75;
+                    break;
+                case 3: valorFilme = valorFilme * 0.50;
+                    break;
+                case 4: valorFilme = valorFilme * 0.25;
+                    break;
+                case 5: valorFilme = 0d;
+                    break;
+            }
+            valorTotal += valorFilme;
+        }
+        return valorTotal;
     }
 
     public void notificarAtrasos(){
