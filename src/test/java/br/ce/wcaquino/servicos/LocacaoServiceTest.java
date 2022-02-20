@@ -26,6 +26,7 @@ import static br.ce.wcaquino.builders.FilmeBuilder.umFilmeSemEstoque;
 import static br.ce.wcaquino.builders.LocacaoBuilder.umLocacao;
 import static br.ce.wcaquino.builders.UsuarioBuilder.umUsuario;
 import static br.ce.wcaquino.matchers.MatchersProprios.*;
+import static br.ce.wcaquino.servicos.CalculadoraTest.ordem;
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -58,6 +59,7 @@ public class LocacaoServiceTest {
     public void setup(){
         MockitoAnnotations.initMocks(this);
         System.out.println("inicializando 2");
+        ordem.append(2);
     }
 
     @After
@@ -65,6 +67,10 @@ public class LocacaoServiceTest {
         System.out.println("Finalizando 2");
     }
 
+    @AfterClass
+    public static void tearDownClass(){
+        System.out.println(ordem.toString());
+    }
     @Test
     public void deveAlugarFilme() throws Exception {
 

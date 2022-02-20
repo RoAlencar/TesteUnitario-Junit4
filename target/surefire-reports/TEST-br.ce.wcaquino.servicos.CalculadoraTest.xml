@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="br.ce.wcaquino.servicos.CalculadoraTest" time="0.072" tests="5" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
+    <property name="java.vm.version" value="11.0.12+8-LTS-237"/>
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-11.0.12\bin"/>
+    <property name="maven.multiModuleProjectDirectory" value="C:\Users\Rodrigo\Documents\Workspace\TestesUnitarios - JUnit 4"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
+    <property name="java.vendor.url" value="https://openjdk.java.net/"/>
+    <property name="guice.disable.misplaced.annotation.check" value="true"/>
+    <property name="path.separator" value=";"/>
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
+    <property name="sun.os.patch.level" value=""/>
+    <property name="user.script" value=""/>
+    <property name="user.country" value="BR"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="user.dir" value="C:\Users\Rodrigo\Documents\Workspace\TestesUnitarios - JUnit 4"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="java.runtime.version" value="11.0.12+8-LTS-237"/>
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.io.tmpdir" value="C:\Users\Rodrigo\AppData\Local\Temp\"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="user.variant" value=""/>
+    <property name="os.name" value="Windows 10"/>
+    <property name="classworlds.conf" value="C:\Maven\bin\m2.conf"/>
+    <property name="sun.jnu.encoding" value="Cp1252"/>
+    <property name="java.library.path" value="C:\Program Files\Java\jdk-11.0.12\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Users\Rodrigo\AppData\Local\Yarn\config\global\node_modules\.bin;C:\Users\Rodrigo\AppData\Roaming\npm;C:\Users\Rodrigo\AppData\Roaming\Composer\vendor\bin;;C:\laragon\bin\laragon\utils;C:\laragon\bin\mysql\mysql-5.7.33-winx64\bin;C:\laragon\bin\php\php-7.4.19-Win32-vc15-x64;C:\laragon\bin\composer;C:\laragon\bin\apache\httpd-2.4.47-win64-VS16\bin;C:\laragon\bin\redis\redis-x64-3.2.100;C:\laragon\bin\nodejs\node-v14;C:\laragon\bin\nginx\nginx-1.19.10;C:\laragon\bin\notepad++;C:\laragon\bin\telnet;C:\laragon\bin\ngrok;C:\laragon\bin\git\bin;C:\laragon\bin\git\cmd;C:\laragon\bin\git\usr\bin;C:\laragon\bin\git\mingw64\bin;C:\laragon\bin;C:\laragon\usr\bin;C:\laragon\bin\cmder\bin;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\Program Files\Java\jdk-11.0.12;C:\Maven\bin;C:\Users\Rodrigo\AppData\Local\Microsoft\WindowsApps;;C:\Users\Rodrigo\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Rodrigo\AppData\Roaming\npm;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\share\vim\vim74;C:\laragon\bin\cmder\;;."/>
+    <property name="maven.conf" value="C:\Maven/conf"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="java.class.version" value="55.0"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="os.version" value="10.0"/>
+    <property name="library.jansi.path" value="C:\Maven\lib\jansi-native"/>
+    <property name="user.home" value="C:\Users\Rodrigo"/>
+    <property name="user.timezone" value="America/Sao_Paulo"/>
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob"/>
+    <property name="file.encoding" value="Cp1252"/>
+    <property name="java.specification.version" value="11"/>
+    <property name="user.name" value="Rodrigo"/>
+    <property name="java.class.path" value="C:\Maven\boot\plexus-classworlds-2.6.0.jar"/>
+    <property name="java.vm.specification.version" value="11"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher test"/>
+    <property name="java.home" value="C:\Program Files\Java\jdk-11.0.12"/>
+    <property name="user.language" value="pt"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
+    <property name="java.vm.info" value="mixed mode"/>
+    <property name="java.version" value="11.0.12"/>
+    <property name="java.vendor" value="Oracle Corporation"/>
+    <property name="sun.stderr.encoding" value="cp850"/>
+    <property name="maven.home" value="C:\Maven"/>
+    <property name="file.separator" value="\"/>
+    <property name="java.version.date" value="2021-07-20"/>
+    <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="java.vendor.version" value="18.9"/>
+    <property name="sun.stdout.encoding" value="cp850"/>
+    <property name="sun.desktop" value="windows"/>
+    <property name="sun.cpu.isalist" value="amd64"/>
+  </properties>
+  <testcase name="deveSomarDoisValores" classname="br.ce.wcaquino.servicos.CalculadoraTest" time="0.008"/>
+  <testcase name="deveMultiplicarDoisValores" classname="br.ce.wcaquino.servicos.CalculadoraTest" time="0.016"/>
+  <testcase name="deveDividirDoisValores" classname="br.ce.wcaquino.servicos.CalculadoraTest" time="0.017"/>
+  <testcase name="deveSubtrairDoisValores" classname="br.ce.wcaquino.servicos.CalculadoraTest" time="0.018"/>
+  <testcase name="deveLancarExcecaoAoDividirPorZero" classname="br.ce.wcaquino.servicos.CalculadoraTest" time="0.013"/>
+</testsuite>

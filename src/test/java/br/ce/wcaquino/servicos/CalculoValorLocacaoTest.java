@@ -7,9 +7,7 @@ import br.ce.wcaquino.entidades.Locacao;
 import br.ce.wcaquino.entidades.Usuario;
 import br.ce.wcaquino.exceptions.FilmeSemEstoqueException;
 import br.ce.wcaquino.exceptions.LocadoraException;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.mockito.InjectMocks;
@@ -21,7 +19,8 @@ import java.util.Collection;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.runners.Parameterized.*;
+import static org.junit.runners.Parameterized.Parameter;
+import static org.junit.runners.Parameterized.Parameters;
 
 @RunWith(Parameterized.class)
 public class CalculoValorLocacaoTest {
@@ -47,6 +46,17 @@ public class CalculoValorLocacaoTest {
     @Before
     public void setup(){
         MockitoAnnotations.initMocks(this);
+        System.out.println("Iniciando 3...");
+        CalculadoraTest.ordem.append(3);
+    }
+
+    @After
+    public void tearDown(){
+        System.out.println("Finalizando 3");
+    }
+    @AfterClass
+    public static void tearDownClass(){
+        System.out.println(CalculadoraTest.ordem.toString());
     }
 
     private static Filme filme1 = FilmeBuilder.umFilme().agora();
@@ -72,9 +82,11 @@ public class CalculoValorLocacaoTest {
         });
     }
     @Test
-    public void deveCalcularValorLocacaoConsiderandoDescontos() throws FilmeSemEstoqueException, LocadoraException {
+    public void deveCalcularValorLocacaoConsiderandoDescontos() throws FilmeSemEstoqueException, LocadoraException, InterruptedException {
         //Cenario
         Usuario usuario = new Usuario("Usuario 1");
+
+        Thread.sleep(5000);
         //Ação
         Locacao resultado = service.alugarFilme(usuario,filmes);
 
